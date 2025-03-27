@@ -11,7 +11,7 @@ import { CartService } from '../cart.service';
 export class ProductlistComponent {
   products: any[] = [];
   newProduct:any={}
-  searchText="Half"
+  searchText=""
 
   columns= [ "category", "description", "name", "picture", "price", "quantity" ]
 
