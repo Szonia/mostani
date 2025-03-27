@@ -1,0 +1,51 @@
+<div *ngIf="orders && orders.length">
+    <div *ngFor="let order of orders; let i = index" class="order-container">
+      <h3>Rendelés {{ i + 1 }}</h3>
+  
+     
+      <ng-container *ngFor="let key of objectKeys(order)">
+        <div class="field" *ngIf="key !== 'status'">
+          <label>{{ key }}:</label>
+          <input [(ngModel)]="order[key]" />
+        </div>
+      </ng-container>
+  
+   
+      <div class="field">
+        <label>Státusz:</label>
+        <select [(ngModel)]="order.status" (change)="updateOrderStatus(i, order.status)">
+          <option *ngFor="let status of statuses" [value]="status">{{ status }}</option>
+        </select>
+      </div>
+  
+     
+      <div class="actions">
+        <button (click)="deleteOrder(i)">🗑️ Törlés</button>
+      </div>
+    </div>
+  </div>
+  
+  <div *ngIf="!orders || orders.length === 0">
+    <p>Nincsenek rendelések.</p>
+  </div>
+  
+
+  <!-- <p>{{orders|json}}</p> -->
+
+<!-- <div *ngIf="orders && orders.length">
+    <div *ngFor="let order of orders; let i = index" class="order-container">
+      <h3>Rendelés {{ i + 1 }}</h3>
+      <div *ngFor="let key of objectKeys(order)" class="field">
+        <label>{{ key }}:</label>
+        <input [(ngModel)]="orders[i][key]" />
+      </div>
+    </div>
+  </div>
+  
+  <div *ngIf="!orders">
+    <p>Betöltés...</p>
+  </div>
+   -->
+
+
+

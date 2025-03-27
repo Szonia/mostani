@@ -1,0 +1,24 @@
+<form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+  <h2>Regisztráció</h2>
+
+  <label for="email">Email</label>
+  <input type="email" id="email" formControlName="email" required>
+  <div *ngIf="registrationForm.get('email')?.invalid && registrationForm.get('email')?.touched">
+    <small *ngIf="registrationForm.get('email')?.hasError('invalidEmail')">Az email címnek tartalmaznia kell az "&#64;" és "." karaktereket.</small>
+  </div>
+
+  <label for="password">Jelszó</label>
+  <input type="password" id="password" formControlName="password" required>
+  <div *ngIf="registrationForm.get('password')?.invalid && registrationForm.get('password')?.touched">
+    <small *ngIf="registrationForm.get('password')?.hasError('minlength')">A jelszónak minimum 5 karakter hosszúnak kell lennie.</small>
+  </div>
+
+  <label for="confirmPassword">Jelszó megerősítése</label>
+  <input type="password" id="confirmPassword" formControlName="confirmPassword" required>
+  <div *ngIf="registrationForm.hasError('mismatch') && registrationForm.get('confirmPassword')?.touched">
+    <small>A két jelszó nem egyezik.</small>
+  </div>
+
+  <button type="submit" [disabled]="registrationForm.invalid">Regisztrálok</button>
+</form>
+
