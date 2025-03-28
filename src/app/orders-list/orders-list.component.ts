@@ -22,6 +22,14 @@ export class OrdersListComponent {
           ...value
         }));
       }
+      this.orders.forEach(order => {
+        order.items = order.item?.map (( item: any ) => {
+          delete item.key;
+          delete item.description;
+          delete item.picture;
+          return JSON.stringify(item);
+        });
+      })
     });
   }
 
