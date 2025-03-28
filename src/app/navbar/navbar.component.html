@@ -17,22 +17,31 @@
                         <li class="dropdown-submenu">
                             <a class="dropdown-item dropdown-toggle" [routerLink]="['/gumicukrok']">Gumicukrok</a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" (click)="setSearch('sweet_gummies')" >Édes</a></li>
-                                <li><a class="dropdown-item" (click)="setSearch('sour_gummies')" >Savanyú</a></li>
+                                <!-- <li><a class="dropdown-item" (click)="setSearch('sweet_gummies')" >Édes</a></li> -->
+                                <li><a class="dropdown-item"[routerLink]="['/edes-gumicukrok']" >Édes</a></li>
+                                <!-- <li><a class="dropdown-item" (click)="setSearch('sour_gummies')" >Savanyú</a></li> -->
+                                <li><a class="dropdown-item" [routerLink]="['/savanyu-gumicukrok']" >Savanyú</a></li>
+
                             </ul>
                         </li>
                         <li class="dropdown-submenu">
                             <a class="dropdown-item dropdown-toggle" [routerLink]="['/chipsek']">Chipsek</a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" (click)="setSearch('salty_chips')" >Sós</a></li>
-                                <li><a class="dropdown-item" (click)="setSearch('spicy_chips')" >Csípős</a></li>
+                                <!-- <li><a class="dropdown-item" (click)="setSearch('salty_chips')" >Sós</a></li> -->
+                                <li><a class="dropdown-item"[routerLink]="['/sos-chipsek']" >Sós</a></li>
+                                <!-- <li><a class="dropdown-item" (click)="setSearch('spicy_chips')" >Csípős</a></li> -->
+                                <li><a class="dropdown-item"[routerLink]="['/csipos-chipsek']" >Csipős</a></li>
+
                             </ul>
                         </li>
                         <li class="dropdown-submenu">
                             <a class="dropdown-item dropdown-toggle" [routerLink]="['/uditok']">Üdítők</a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" (click)="setSearch('sweet_drinks')" >Édes</a></li>
-                                <li><a class="dropdown-item" (click)="setSearch('sour_drinks')" >Savanyú</a></li>
+                                <!-- <li><a class="dropdown-item" (click)="setSearch('sweet_drinks')" >Édes</a></li> -->
+                                <li><a class="dropdown-item"[routerLink]="['/edes-uditok']" >Édes</a></li>
+                                <!-- <li><a class="dropdown-item" (click)="setSearch('sour_drinks')" >Savanyú</a></li> -->
+                                <li><a class="dropdown-item"[routerLink]="['/savanyu-uditok']" >Savanyú</a></li>
+
                             </ul>
                         </li>
                     </ul>
