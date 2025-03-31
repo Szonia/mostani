@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
+import { AuthService } from '../../services/auth/auth.service';
 import { Router } from '@angular/router';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -9,34 +10,30 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 })
 export class LoginComponent {
   loginForm: FormGroup;
+  loginError: string = '';
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(private auth: AuthService, private router: Router, private fb: FormBuilder) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(5)]]
+      password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
 
+  // Bejelentkezés
   onSubmit() {
-    const formValue = this.loginForm.value;
-    const storedEmail = localStorage.getItem('userEmail');
-    const storedPassword = localStorage.getItem('userPassword');
-
-    console.log('Beírt email:', formValue.email);
-    console.log('Beírt jelszó:', formValue.password);
-    console.log('Mentett email:', storedEmail);
-    console.log('Mentett jelszó:', storedPassword);
-
-    if (formValue.email === storedEmail && formValue.password === storedPassword) {
-      localStorage.setItem('loggedInUser', formValue.email); 
-      console.log('Sikeres bejelentkezés, mentett email:', localStorage.getItem('loggedInUser'));
-      this.router.navigate(['/fiokom']); 
-    } else {
-      alert('Hibás email vagy jelszó!');
+    if (this.loginForm.valid) {
+      const { email, password } = this.loginForm.value;
+      this.auth.login(email, password)
+        .then(res => {
+          if (res.success) {
+            this.router.navigate(['/candies']);  // Navigálás a termékek oldalra
+          } else {
+            this.loginError = res.message;
+          }
+        })
+        .catch(err => {
+          this.loginError = 'Hiba történt a bejelentkezés során';
+        });
     }
   }
 }
-
-
-
-

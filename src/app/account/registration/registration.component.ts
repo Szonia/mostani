@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { AuthService } from '../../services/auth/auth.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-registration',
@@ -10,40 +10,32 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 export class RegistrationComponent {
   registrationForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(private auth: AuthService, private fb: FormBuilder) {
     this.registrationForm = this.fb.group({
-      email: ['', [Validators.required, this.emailValidator]],  
-      password: ['', [Validators.required, Validators.minLength(5)]],  
-      confirmPassword: ['', [Validators.required]]
-    }, {
-      validators: this.passwordsMatchValidator
-    });
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', Validators.required]
+    }, { validator: this.passwordMatchValidator });
   }
 
-  
-  passwordsMatchValidator(group: FormGroup) {
-    const password = group.get('password')?.value;
-    const confirmPassword = group.get('confirmPassword')?.value;
-    return password === confirmPassword ? null : { mismatch: true };
+  // Jelszavak ellenőrzése
+  passwordMatchValidator(group: FormGroup): { [key: string]: boolean } | null {
+    const password = group.get('password');
+    const confirmPassword = group.get('confirmPassword');
+    return password && confirmPassword && password.value !== confirmPassword.value ? { mismatch: true } : null;
   }
 
-  emailValidator(control: any): { [key: string]: boolean } | null {
-    const email = control.value;
-    if (email && email.includes('@') && email.includes('.')) {
-      return null;
-    }
-    return { 'invalidEmail': true };  
-  }
-
-
-  onSubmit() {
+  // Regisztráció
+  register() {
     if (this.registrationForm.valid) {
-      const formValue = this.registrationForm.value;
-      localStorage.setItem('userEmail', formValue.email);
-      localStorage.setItem('userPassword', formValue.password); 
-      alert('Regisztráció sikeres!');
-      this.router.navigate(['/login']);
+      const { email, password } = this.registrationForm.value;
+      this.auth.register(email, password).then(res => {
+        if (res.success) {
+          alert(res.message);  // Sikeres regisztráció esetén
+        }
+      }).catch(err => {
+        console.error("Hiba történt!", err);
+      });
     }
   }
 }
-

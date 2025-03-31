@@ -56,6 +56,7 @@ const routes: Routes = [
 
   { path: 'kosar', component: KosarComponent },
   { path: 'checkout', component: CheckoutComponent},
+  { path: 'candies', component: CandyListComponent },
 
   { path: 'chipsek', component: ChipsekComponent },
   { path: 'sos-chipsek', component: SosChipsekComponent },

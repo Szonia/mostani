@@ -1,45 +1,63 @@
-
-
 import { Injectable } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class AuthService {
-  private registeredUser: any = null;
+  loggedUser: any;
+  private loggedUserSubject = new BehaviorSubject<any>(null);
 
-  constructor() {}
-
-  
-  register(userData: { firstName: string; lastName: string; email: string; password: string; confirmPassword: string; phone: string }) {
-    this.registeredUser = { ...userData };
-    console.log('Felhasználó regisztrálva:', this.registeredUser);
+  constructor(private angularfireauth: AngularFireAuth, private router: Router) {
+    this.angularfireauth.authState.subscribe(user => {
+      this.loggedUser = user;
+      this.loggedUserSubject.next(user);
+    });
   }
 
-  
-  login(email: string, password: string): boolean {
-    if (this.registeredUser && this.registeredUser.email === email && this.registeredUser.password === password) {
-      console.log('Bejelentkezve:', this.registeredUser);
-      return true;
-    }
-    return false;
+  // Regisztráció email és jelszó alapján
+  register(email: string, password: string) {
+    return this.angularfireauth.createUserWithEmailAndPassword(email, password)
+      .then(() => {
+        console.log('Sikeres regisztráció!');
+        this.router.navigate(['login']);  // Átirányítás a bejelentkezési oldalra
+        return { success: true, message: 'Sikeres regisztráció!' };
+      })
+      .catch(error => {
+        console.error("Regisztrációs hiba:", error);
+        return { success: false, message: error.message };
+      });
   }
 
-  
-  isRegistered(): boolean {
-    return this.registeredUser !== null;
+  // Bejelentkezés email és jelszó alapján
+  login(email: string, password: string): Promise<any> {
+    return this.angularfireauth.signInWithEmailAndPassword(email, password)
+      .then(cred => {
+        if (cred.user) {
+          this.loggedUserSubject.next(cred.user);
+          console.log("Bejelentkezés sikeres!");
+          this.router.navigate(['/candies']);  // Átirányítás a termékek oldalára
+          return { success: true };
+        } else {
+          return { success: false, message: 'Az email cím vagy jelszó nem megfelelő' };
+        }
+      })
+      .catch((error: any) => {
+        console.error("Hiba a bejelentkezéskor:", error);
+        return { success: false, message: error.message };
+      });
   }
 
-  
-  getRegisteredUser() {
-    return this.registeredUser;
+  // Kilépés
+  logout(): Promise<void> {
+    return this.angularfireauth.signOut().then(() => {
+      this.loggedUserSubject.next(null);
+    });
   }
 
-  
-  logout(): void {
-    this.registeredUser = null;  
-    console.log('Felhasználó kijelentkezve');
+  getCurrentUser() {
+    return this.loggedUserSubject.asObservable();
   }
 }
-
-

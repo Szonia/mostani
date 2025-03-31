@@ -8,7 +8,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ProductlistComponent } from './productlist/productlist.component';
 import { provideHttpClient } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ChipsekComponent } from './products/chipsek/chipsek.component';
 import { GumicukrokComponent } from './products/gumicukrok/gumicukrok.component';
 import { EdesGumicukrokComponent } from './products/edes-gumicukrok/edes-gumicukrok.component';
@@ -40,7 +40,6 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 
-import { ReactiveFormsModule } from '@angular/forms';
 import { AdminloginComponent } from './admin/login/adminlogin/adminlogin.component';
 import { CheckoutComponent } from './checkout/checkout/checkout.component';
 import { environments } from '../environment/environments';
@@ -51,19 +50,19 @@ import { OrdersListComponent } from './orders-list/orders-list.component';
 import { SearchPipe } from './search.pipe';
 import { SortPipe } from './sort.pipe';
 
+// Helyes import az AuthService számára
+import { AuthService } from './services/auth/auth.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
     ProductlistComponent,
-    
     FiokomComponent,
     KapcsolatComponent,
     FooldalComponent,
     KivansaglistamComponent,
     KosarComponent,
-
     ChipsekComponent,
     GumicukrokComponent,
     EdesGumicukrokComponent,
@@ -73,13 +72,8 @@ import { SortPipe } from './sort.pipe';
     UditokComponent,
     EdesUditokComponent,
     SavanyuUditokComponent,
-    FiokomComponent,
-    KapcsolatComponent,
-    KivansaglistamComponent,
-    KosarComponent,
     RegistrationComponent,
     LoginComponent,
-
     fantaComponent,
     ArizonaComponent,
     bazookaComponent,
@@ -92,7 +86,6 @@ import { SortPipe } from './sort.pipe';
     sourComponent,
     takisComponent,
     warheadsComponent,
-
     AdminloginComponent,
     CheckoutComponent,
     CandyListComponent,
@@ -100,22 +93,19 @@ import { SortPipe } from './sort.pipe';
     OrdersListComponent,
     SearchPipe,
     SortPipe
-    
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     NgbModule,
-
-    ReactiveFormsModule,
+    ReactiveFormsModule, // Importálva a ReactiveFormsModule
     RouterModule,
     FormsModule,
     AngularFireModule.initializeApp(environments.firebaseConfig),
     AngularFireDatabaseModule,
     AngularFireAuthModule
-
   ],
-  providers: [provideHttpClient()],
+  providers: [AuthService, provideHttpClient()], // AuthService hozzáadva a providers szekcióhoz
   bootstrap: [AppComponent]
 })
 export class AppModule { }
