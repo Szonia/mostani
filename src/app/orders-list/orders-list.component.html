@@ -1,9 +1,8 @@
-<!-- {{orders|json}} -->
+<!-- {{orders | json}} -->
 
 <div *ngIf="orders && orders.length">
   <div *ngFor="let order of orders; let i = index" class="order-container">
-    <h3>Rendelés {{ i }}</h3>
-    <!-- <h3>Rendelés {{ i + 1 }}</h3> -->
+    <h3>Rendelés {{ i + 1 }}</h3>
 
     <!-- Email -->
     <div class="field">
@@ -16,15 +15,15 @@
       <label>Termékek:</label>
       <ul>
         <li *ngFor="let item of order.items">
-          {{ item.name }} ({{ item.mennyiseg }})
+          {{ item.name }} ({{ item.mennyiseg }} x {{ item.price }} HUF)
         </li>
       </ul>
     </div>
 
-    <!-- Price -->
+    <!-- Total Price -->
     <div class="field">
-      <label>Ár:</label>
-      <input [(ngModel)]="order.price" readonly />
+      <label>Fizetendő összeg:</label>
+      <input [value]="order.totalPrice + ' HUF'" readonly />
     </div>
 
     <!-- Status -->

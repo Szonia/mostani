@@ -8,24 +8,30 @@ import { CartService } from '../services/cart/cart.service';
 })
 export class OrdersListComponent {
   orders: any[] = [];
-  statuses: string[] = ['pending', 'completed', 'canceled'];
+  statuses: string[] = ['pending', 'completed', 'canceled', 'delivered'];
   objectKeys = Object.keys;
 
   constructor(private cart: CartService) {
     this.cart.getOrders().subscribe((data) => {
+      console.log('Orders data:', data); 
+      
       if (Array.isArray(data)) {
-        this.orders = data;
+        this.orders = data.map(order => ({
+          ...order,
+          totalPrice: Math.round(order.items?.reduce((total: number, item: any) => total + (item.price * item.mennyiseg), 0) || 0)
+        }));
       } else {
-        this.orders = Object.entries(data).map(([key, value,]: [string, any]) => ({
+        this.orders = Object.entries(data).map(([key, value]: [string, any]) => ({
           key,
           email: value.email,
           items: value.items?.map((item: any) => ({
             name: item.name,
-            mennyiseg: item.mennyiseg
+            mennyiseg: item.mennyiseg,
+            price: Math.round(item.price)
           })),
-          price: value.price,
+          totalPrice: Math.round(value.items?.reduce((total: number, item: any) => total + (item.price * item.mennyiseg), 0) || 0), 
           status: value.status,
-          telephonenumber: value.telephonenumber
+          phoneNumber: value.telephonenumber
         }));
       }
     });
@@ -36,11 +42,16 @@ export class OrdersListComponent {
   }
 
   updateOrderStatus(index: number, newStatus: string): void {
-    this.orders[index].status = newStatus;
+    const orderKey = this.orders[index].key;
+    this.cart.updateOrderStatus(orderKey, newStatus)
+      .then(() => {
+        console.log(`Order ${orderKey} status updated to ${newStatus}`);
+      })
+      .catch(error => {
+        console.error('Error updating order status:', error);
+      });
   }
 }
-
-
 
 
 
