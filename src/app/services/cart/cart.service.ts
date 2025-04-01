@@ -56,7 +56,7 @@ export class CartService {
   }
 
   addOrder(order:any){
-    order.Uid="user12"
+    
     order.items=this.cart
     order.status="pending"
     this.ordersRef.push(order)

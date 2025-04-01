@@ -19,14 +19,14 @@ export class LoginComponent {
     });
   }
 
-  // Bejelentkezés
+ 
   onSubmit() {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
       this.auth.login(email, password)
         .then(res => {
           if (res.success) {
-            this.router.navigate(['/candies']);  // Navigálás a termékek oldalra
+            this.router.navigate(['/fiokom']); 
           } else {
             this.loginError = res.message;
           }

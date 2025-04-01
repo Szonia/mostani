@@ -36,6 +36,7 @@ export class ProductlistComponent {
 
 
   editProduct(product:any){
+    console.log(product)
     this.pserv.updateProduct(product)
   }
   deleteProduct(product:any){

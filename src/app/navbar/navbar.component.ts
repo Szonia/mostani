@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CartService } from '../cart.service';
 import { SearchService } from '../search.service';
+import { AuthService } from '../services/auth/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -11,7 +12,8 @@ export class NavbarComponent {
   cart: any;
   searchQuery: string = ''; 
   searchResult: any[] = [];  
-
+  
+  user:any
   
   products = [
     { name: 'Sour patch kids', category: 'Snack' },
@@ -22,8 +24,12 @@ export class NavbarComponent {
     
   ];
 
-  constructor(private cartServ: CartService, public searchServ:SearchService) {
+  constructor(private cartServ: CartService, public searchServ:SearchService, private auth:AuthService) {
     this.cartServ.getCart().subscribe((res: any) => this.cart = res);
+
+    this.auth.getCurrentUser().subscribe(
+      (u)=>this.user=u
+    )
   }
 
   setSearch(car:string){
@@ -35,17 +41,9 @@ export class NavbarComponent {
     console.log('Kosárba tett egy terméket');
   }
 
+  signOut(){
+    this.auth.logout()
+  }
   
-  // onSearch(): void {
-  //   if (this.searchQuery.trim() === '') {
-  //     this.searchResult = [];
-  //   } else {
-  //     this.searchResult = this.products.filter(product =>
-  //       product.name.toLowerCase().includes(this.searchQuery.toLowerCase())
-  //     );
-  //   }
-  //   if (this.searchResult.length === 0) {
-  //     alert('Nincs találat a keresésre!');
-  //   }
-  // }
+
 }

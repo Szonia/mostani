@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CartService } from '../../services/cart/cart.service';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-checkout',
@@ -11,14 +12,25 @@ export class CheckoutComponent {
   order: any = {};
   isSubmitting = false;
   successMessage: string | null = null;
-
-  constructor(private router:Router, private cartServ:CartService){}
+  user:any
+  constructor(private router:Router, private cartServ:CartService,private auth:AuthService){
+    this.auth.getCurrentUser().subscribe(
+      (u)=>{
+        this.user=u
+        this.order.email=this.user.email
+        console.log("user", this.user)
+      }
+    )
+  }
 
   submitOrder(form: any) {
     
     if (form.valid && !this.isSubmitting) {
       this.isSubmitting = true;
+      this.order.Uid=this.user.uid
       this.cartServ.addOrder(this.order)
+      console.log("Order:",this.order)
+      console.log("User:",this.user)
       this.successMessage = 'Rendelés sikeresen leadva!';
 
       setTimeout(() => {

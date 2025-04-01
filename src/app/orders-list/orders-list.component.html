@@ -1,3 +1,4 @@
+{{orders|json}}
 <div *ngIf="orders && orders.length">
     <div *ngFor="let order of orders; let i = index" class="order-container">
       <h3>Rendelés {{ i + 1 }}</h3>
@@ -30,22 +31,6 @@
   </div>
   
 
-  <!-- <p>{{orders|json}}</p> -->
-
-<!-- <div *ngIf="orders && orders.length">
-    <div *ngFor="let order of orders; let i = index" class="order-container">
-      <h3>Rendelés {{ i + 1 }}</h3>
-      <div *ngFor="let key of objectKeys(order)" class="field">
-        <label>{{ key }}:</label>
-        <input [(ngModel)]="orders[i][key]" />
-      </div>
-    </div>
-  </div>
-  
-  <div *ngIf="!orders">
-    <p>Betöltés...</p>
-  </div>
-   -->
 
 
 
