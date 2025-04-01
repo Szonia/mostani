@@ -1,5 +1,65 @@
-{{orders|json}}
+<!-- {{orders|json}} -->
+
 <div *ngIf="orders && orders.length">
+  <div *ngFor="let order of orders; let i = index" class="order-container">
+    <h3>Rendelés {{ i }}</h3>
+    <!-- <h3>Rendelés {{ i + 1 }}</h3> -->
+
+    <!-- Email -->
+    <div class="field">
+      <label>Email:</label>
+      <input [(ngModel)]="order.email" readonly />
+    </div>
+
+    <!-- Items -->
+    <div class="field">
+      <label>Termékek:</label>
+      <ul>
+        <li *ngFor="let item of order.items">
+          {{ item.name }} ({{ item.mennyiseg }})
+        </li>
+      </ul>
+    </div>
+
+    <!-- Price -->
+    <div class="field">
+      <label>Ár:</label>
+      <input [(ngModel)]="order.price" readonly />
+    </div>
+
+    <!-- Status -->
+    <div class="field">
+      <label>Státusz:</label>
+      <select [(ngModel)]="order.status" (change)="updateOrderStatus(i, order.status)">
+        <option *ngFor="let status of statuses" [value]="status">{{ status }}</option>
+      </select>
+    </div>
+
+    <!-- Telephonenumber -->
+    <div class="field">
+      <label>Telefonszám:</label>
+      <input [(ngModel)]="order.phoneNumber" readonly />
+    </div>
+
+    <!-- Actions -->
+    <div class="actions">
+      <button (click)="deleteOrder(i)">🗑️ Törlés</button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!orders || orders.length === 0">
+  <p>Nincsenek rendelések.</p>
+</div>
+
+
+
+
+
+
+
+
+<!-- <div *ngIf="orders && orders.length">
     <div *ngFor="let order of orders; let i = index" class="order-container">
       <h3>Rendelés {{ i + 1 }}</h3>
   
@@ -32,5 +92,5 @@
   
 
 
-
+ -->
 

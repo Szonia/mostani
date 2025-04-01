@@ -13,25 +13,25 @@ export class RegistrationComponent {
   constructor(private auth: AuthService, private fb: FormBuilder) {
     this.registrationForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', [Validators.required, Validators.minLength(5)]],
       confirmPassword: ['', Validators.required]
     }, { validator: this.passwordMatchValidator });
   }
 
-  // Jelszavak ellenőrzése
+  
   passwordMatchValidator(group: FormGroup): { [key: string]: boolean } | null {
     const password = group.get('password');
     const confirmPassword = group.get('confirmPassword');
     return password && confirmPassword && password.value !== confirmPassword.value ? { mismatch: true } : null;
   }
 
-  // Regisztráció
+  
   register() {
     if (this.registrationForm.valid) {
       const { email, password } = this.registrationForm.value;
       this.auth.register(email, password).then(res => {
         if (res.success) {
-          alert(res.message);  // Sikeres regisztráció esetén
+          alert(res.message);  
         }
       }).catch(err => {
         console.error("Hiba történt!", err);

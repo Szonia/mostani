@@ -17,12 +17,12 @@ export class AuthService {
     });
   }
 
-  // Regisztráció email és jelszó alapján
+  
   register(email: string, password: string) {
     return this.angularfireauth.createUserWithEmailAndPassword(email, password)
       .then(() => {
         console.log('Sikeres regisztráció!');
-        this.router.navigate(['login']);  // Átirányítás a bejelentkezési oldalra
+        this.router.navigate(['login']);  
         return { success: true, message: 'Sikeres regisztráció!' };
       })
       .catch(error => {
@@ -31,14 +31,14 @@ export class AuthService {
       });
   }
 
-  // Bejelentkezés email és jelszó alapján
+  
   login(email: string, password: string): Promise<any> {
     return this.angularfireauth.signInWithEmailAndPassword(email, password)
       .then(cred => {
         if (cred.user) {
           this.loggedUserSubject.next(cred.user);
           console.log("Bejelentkezés sikeres!");
-          this.router.navigate(['/candies']);  // Átirányítás a termékek oldalára
+          this.router.navigate(['/candies']);  
           return { success: true };
         } else {
           return { success: false, message: 'Az email cím vagy jelszó nem megfelelő' };
@@ -50,7 +50,7 @@ export class AuthService {
       });
   }
 
-  // Kilépés
+ 
   logout(): Promise<void> {
     return this.angularfireauth.signOut().then(() => {
       this.loggedUserSubject.next(null);
